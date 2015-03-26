@@ -6,13 +6,13 @@ library plugin.src.plugin_impl;
 
 import 'dart:collection';
 
+import 'package:plugin/manager.dart';
 import 'package:plugin/plugin.dart';
 
 /**
- * An object that manages the extension points for a single instance of the
- * analysis server.
+ * A concrete implementation of an [ExtensionManager].
  */
-class ExtensionManager {
+class ExtensionManagerImpl implements ExtensionManager {
   /**
    * A table mapping the id's of extension points to the corresponding
    * extension points.
@@ -20,13 +20,7 @@ class ExtensionManager {
   Map<String, ExtensionPointImpl> extensionPoints =
       new HashMap<String, ExtensionPointImpl>();
 
-  /**
-   * Process each of the given [plugins] by allowing them to register extension
-   * points and extensions.
-   *
-   * An [ExtensionError] will be thrown if any of the plugins throws such an
-   * exception while registering with this manager.
-   */
+  @override
   void processPlugins(List<Plugin> plugins) {
     for (Plugin plugin in plugins) {
       plugin.registerExtensionPoints((String identifier,
