@@ -15,7 +15,7 @@ main() {
     test('processPlugins', () {
       TestPlugin plugin1 = new TestPlugin('plugin1');
       TestPlugin plugin2 = new TestPlugin('plugin1');
-      ExtensionManager manager = new ExtensionManager();
+      ExtensionManagerImpl manager = new ExtensionManagerImpl();
       manager.processPlugins([plugin1, plugin2]);
       expect(plugin1.extensionPointsRegistered, true);
       expect(plugin1.extensionsRegistered, true);
@@ -25,7 +25,7 @@ main() {
 
     test('registerExtension - valid', () {
       Plugin plugin = new TestPlugin('plugin');
-      ExtensionManager manager = new ExtensionManager();
+      ExtensionManagerImpl manager = new ExtensionManagerImpl();
       ExtensionPoint point =
           manager.registerExtensionPoint(plugin, 'point', null);
       expect(point, isNotNull);
@@ -38,7 +38,7 @@ main() {
     });
 
     test('registerExtension - non existent', () {
-      ExtensionManager manager = new ExtensionManager();
+      ExtensionManagerImpl manager = new ExtensionManagerImpl();
       expect(() => manager.registerExtension('does not exist', 'extension'),
           throwsA(new isInstanceOf<ExtensionError>()));
       ;
@@ -47,7 +47,7 @@ main() {
     test('registerExtensionPoint - non-conflicting', () {
       Plugin plugin1 = new TestPlugin('plugin1');
       Plugin plugin2 = new TestPlugin('plugin2');
-      ExtensionManager manager = new ExtensionManager();
+      ExtensionManagerImpl manager = new ExtensionManagerImpl();
       expect(
           manager.registerExtensionPoint(plugin1, 'point1', null), isNotNull);
       expect(
@@ -60,7 +60,7 @@ main() {
 
     test('registerExtensionPoint - conflicting - same plugin', () {
       Plugin plugin1 = new TestPlugin('plugin1');
-      ExtensionManager manager = new ExtensionManager();
+      ExtensionManagerImpl manager = new ExtensionManagerImpl();
       expect(
           manager.registerExtensionPoint(plugin1, 'point1', null), isNotNull);
       expect(() => manager.registerExtensionPoint(plugin1, 'point1', null),
@@ -70,7 +70,7 @@ main() {
     test('registerExtensionPoint - conflicting - different plugins', () {
       Plugin plugin1 = new TestPlugin('plugin1');
       Plugin plugin2 = new TestPlugin('plugin1');
-      ExtensionManager manager = new ExtensionManager();
+      ExtensionManagerImpl manager = new ExtensionManagerImpl();
       expect(
           manager.registerExtensionPoint(plugin1, 'point1', null), isNotNull);
       expect(() => manager.registerExtensionPoint(plugin2, 'point1', null),

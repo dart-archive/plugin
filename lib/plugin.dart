@@ -85,8 +85,8 @@ abstract class ExtensionPoint {
 }
 
 /**
- * A contribution to the analysis server that can extend the behavior of the
- * server while also allowing other plugins to extend it's behavior.
+ * A contribution to the host application that can extend the behavior of the
+ * application while also allowing other plugins to extend it's behavior.
  *
  * Clients are expected to subtype this class when implementing plugins.
  */
