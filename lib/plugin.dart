@@ -39,7 +39,7 @@ typedef void ValidateExtension(Object extension);
  * An exception indicating that an error occurred while attempting to register
  * either an extension or an extension point.
  *
- * Clients are not expected to subtype this class.
+ * Clients may not extend, implement or mix-in this class.
  */
 class ExtensionError implements Exception {
   /**
@@ -56,7 +56,7 @@ class ExtensionError implements Exception {
 /**
  * A representation of an extension point.
  *
- * Clients are not expected to subtype this class.
+ * Clients may not extend, implement or mix-in this class.
  */
 abstract class ExtensionPoint {
   /**
@@ -88,7 +88,7 @@ abstract class ExtensionPoint {
  * A contribution to the host application that can extend the behavior of the
  * application while also allowing other plugins to extend it's behavior.
  *
- * Clients are expected to subtype this class when implementing plugins.
+ * Clients may implement this class when implementing plugins.
  */
 abstract class Plugin {
   /**
