@@ -4,6 +4,8 @@
 
 library plugin;
 
+import 'package:plugin/src/plugin_impl.dart';
+
 /**
  * A function used to register the given [extension] to the extension point with
  * the given unique [identifier].
@@ -15,16 +17,13 @@ library plugin;
 typedef void RegisterExtension(String identifier, Object extension);
 
 /**
- * A function used to register an extension point with the given simple
- * [identifier]. If given, the [validator] will be used to validate extensions
- * to the extension point.
+ * A function used to register the given [extensionPoint].
  *
  * An [ExtensionError] will be thrown if the extension point cannot be
  * registered, such as when a plugin attempts to define two extension points
- * with the same simple identifier.
+ * with the same identifier.
  */
-typedef ExtensionPoint RegisterExtensionPoint(String identifier,
-    [ValidateExtension validateExtension]);
+typedef void RegisterExtensionPoint(ExtensionPoint extensionPoint);
 
 /**
  * A function used by a plugin to validate an [extension] to a extension point.
@@ -58,12 +57,20 @@ class ExtensionError implements Exception {
  *
  * Clients may not extend, implement or mix-in this class.
  */
-abstract class ExtensionPoint {
+abstract class ExtensionPoint<E> {
+  /**
+   * Initialize a newly created extension point to be defined by the given
+   * [plugin] with the given [simpleIdentifier]. The [validateExtension]
+   * function will be used to validate extensions for this extension point.
+   */
+  factory ExtensionPoint(Plugin plugin, String simpleIdentifier,
+      ValidateExtension validateExtension) = ExtensionPointImpl<E>;
+
   /**
    * Return an immutable list containing all of the extensions that were
    * registered for this extension point.
    */
-  List<Object> get extensions;
+  List<E> get extensions;
 
   /**
    * Return the plugin that defined this extension point.

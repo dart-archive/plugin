@@ -23,9 +23,7 @@ class ExtensionManagerImpl implements ExtensionManager {
   @override
   void processPlugins(List<Plugin> plugins) {
     for (Plugin plugin in plugins) {
-      plugin.registerExtensionPoints((String identifier,
-              [ValidateExtension validateExtension]) =>
-          registerExtensionPoint(plugin, identifier, validateExtension));
+      plugin.registerExtensionPoints(registerExtensionPoint);
     }
     for (Plugin plugin in plugins) {
       plugin.registerExtensions(registerExtension);
@@ -46,27 +44,22 @@ class ExtensionManagerImpl implements ExtensionManager {
   }
 
   /**
-   * Register an extension point being defined by the given [plugin] with the
-   * given simple [identifier] and [validateExtension].
+   * Register the given [extensionPoint].
    */
-  ExtensionPoint registerExtensionPoint(
-      Plugin plugin, String identifier, ValidateExtension validateExtension) {
-    String uniqueIdentifier = Plugin.buildUniqueIdentifier(plugin, identifier);
+  void registerExtensionPoint(ExtensionPoint extensionPoint) {
+    String uniqueIdentifier = extensionPoint.uniqueIdentifier;
     if (extensionPoints.containsKey(uniqueIdentifier)) {
       throw new ExtensionError(
-          'There is already an extension point with the id "$identifier"');
+          'There is already an extension point with the id "$uniqueIdentifier"');
     }
-    ExtensionPointImpl extensionPoint =
-        new ExtensionPointImpl(plugin, identifier, validateExtension);
-    extensionPoints[uniqueIdentifier] = extensionPoint;
-    return extensionPoint;
+    extensionPoints[uniqueIdentifier] = extensionPoint as ExtensionPointImpl;
   }
 }
 
 /**
  * A concrete representation of an extension point.
  */
-class ExtensionPointImpl implements ExtensionPoint {
+class ExtensionPointImpl<E> implements ExtensionPoint<E> {
   @override
   final Plugin plugin;
 
@@ -81,7 +74,7 @@ class ExtensionPointImpl implements ExtensionPoint {
   /**
    * The list of extensions to this extension point.
    */
-  final List<Object> _extensions = <Object>[];
+  final List<E> _extensions = <E>[];
 
   /**
    * Initialize a newly create extension point to belong to the given [plugin]
@@ -96,7 +89,7 @@ class ExtensionPointImpl implements ExtensionPoint {
    * Return a list containing all of the extensions that have been registered
    * for this extension point.
    */
-  List<Object> get extensions => new UnmodifiableListView(_extensions);
+  List<E> get extensions => new UnmodifiableListView<E>(_extensions);
 
   /**
    * Return the identifier used to uniquely identify this extension point. The
@@ -114,6 +107,6 @@ class ExtensionPointImpl implements ExtensionPoint {
     if (validateExtension != null) {
       validateExtension(extension);
     }
-    _extensions.add(extension);
+    _extensions.add(extension as E);
   }
 }
