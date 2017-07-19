@@ -1,9 +1,9 @@
 name: plugin
-version: 0.2.0
+version: 0.2.0+1
 author: Dart Team <misc@dartlang.org>
 description: Support for building plugins.
 homepage: https://github.com/dart-lang/plugin
 environment:
-  sdk: '>=1.0.0 <2.0.0'
+  sdk: '>=1.0.0 <2.0.0-dev.infinity'
 dev_dependencies:
   test: any
