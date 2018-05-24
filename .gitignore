@@ -1,4 +1,5 @@
 .idea
+.dart_tool/
 .pub
 packages
 build
